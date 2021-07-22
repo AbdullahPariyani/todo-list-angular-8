@@ -1,0 +1,79 @@
+<div class="pos-f-t">
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <div class="col-4 hidden-md-down" id="yellow">
+                <div class="card border-0 shadow rounded-0">
+                    <div class="card-header bg-white border-0 d-flex align-items-center">
+                        <form #todoForm="ngForm" class="w-100">
+                            <mat-form-field class="w-100" appearance="standard">
+                                <input type="text" name="task" [(ngModel)]="newTodo.task" #task matInput placeholder="What needs to be done?" (keydown.enter)="addTodo(todoForm)">
+                                <mat-icon matSuffix>mode_edit</mat-icon>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                    <div *ngIf="todos?.length !== 0" class="card-body p-0">
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" *ngFor="let todo of todoList; index as i;">
+
+                                <mat-form-field class="w-100" *ngIf="todo.id === editTodo.id" appearance="fill">
+                                    <input matInput type="text" name="editTask" [(ngModel)]="todo.title" (focusout)="editTodo = {};" (keydown.enter)="updateTodo(todo)" appAutoFocus>
+                                </mat-form-field>
+
+                                <p *ngIf="todo.id !== editTodo.id" class="d-inline-flex ml-4" [ngStyle]="{'text-decoration':selectedTodoIndex === i ? 'underline' : 'none' }">{{todo.title}} <mat-icon class="maat-icon" (click)="hasEditTodo(todo)">edit</mat-icon>
+                                </p>
+
+                                <button *ngIf="todo.id !== editTodo.id" class="float-right btn btn-sm close-btn" (click)="deleteTodo(todo)" matTooltip="Delete" mat-icon-button aria-label="Delete todo task">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <button *ngIf="todo.id !== editTodo.id" class="float-right btn btn-sm close-btn" (click)="viewTodos(i)" matTooltip="View sub todo" mat-icon-button aria-label="Add sub todo task">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center h-100">
+
+    <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-8">
+        <div class="card border-0 shadow rounded-0 mt-2" *ngIf="selectedTodoIndex != null">
+            <div class="card-header bg-white border-0 d-flex align-items-center">
+                <form #subTodoForm="ngForm" class="w-100">
+                    <mat-form-field class="w-100" appearance="standard">
+                        <input type="text" name="task" [(ngModel)]="newSubTodo.task" #task matInput placeholder="What needs to be done sub task?" (keydown.enter)="addSubTodo(subTodoForm)">
+                        <mat-icon matSuffix>mode_edit</mat-icon>
+                    </mat-form-field>
+                </form>
+            </div>
+
+            <div *ngIf="subTodoList?.length !== 0" class="card-body p-0">
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let todo of subTodoList; index as i;">
+
+                        <mat-form-field class="w-100" *ngIf="todo.id === editTodo.id" appearance="fill">
+                            <input matInput type="text" name="editTask" [(ngModel)]="todo.title" (focusout)="editTodo = {};" (keydown.enter)="updateTodo(todo)" appAutoFocus>
+                        </mat-form-field>
+
+                        <p class="d-inline-flex ml-4">{{todo}} <mat-icon class="maat-icon" (click)="hasEditTodo(todo)">edit</mat-icon>
+                        </p>
+
+                        <button class="float-right btn btn-sm close-btn" (click)="deleteSubTodo(i)" matTooltip="Delete" mat-icon-button aria-label="Delete todo task">
+                            <mat-icon>close</mat-icon>
+                        </button>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
