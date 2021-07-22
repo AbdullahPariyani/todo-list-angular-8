@@ -59,18 +59,12 @@
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item" *ngFor="let todo of subTodoList; index as i;">
-
-                        <mat-form-field class="w-100" *ngIf="todo.id === editTodo.id" appearance="fill">
-                            <input matInput type="text" name="editTask" [(ngModel)]="todo.title" (focusout)="editTodo = {};" (keydown.enter)="updateTodo(todo)" appAutoFocus>
-                        </mat-form-field>
-
                         <p class="d-inline-flex ml-4">{{todo}} <mat-icon class="maat-icon" (click)="hasEditTodo(todo)">edit</mat-icon>
                         </p>
 
                         <button class="float-right btn btn-sm close-btn" (click)="deleteSubTodo(i)" matTooltip="Delete" mat-icon-button aria-label="Delete todo task">
                             <mat-icon>close</mat-icon>
                         </button>
-
                     </li>
                 </ul>
             </div>

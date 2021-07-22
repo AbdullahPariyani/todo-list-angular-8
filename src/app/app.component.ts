@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
 
   getTodos() {
     let todoTasks = [];
+
     if (localStorage.getItem(this.todoName()) !== null) {
       todoTasks = JSON.parse(localStorage.getItem(this.todoName()));
     }
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit {
   loadTodo() {
     this.todos = this.getTodos();
     this.todoList = this.todos;
+    this.subTodoList = this.todos[this.selectedTodoIndex].subTodos;
   }
 
   addTodo(todoForm: NgForm) {
@@ -68,12 +70,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addSubTodo(subTodoForm: NgForm) {
+  async addSubTodo(subTodoForm: NgForm) {
     const todo = subTodoForm.value;
     if (todo.task !== '') {
       this.todos[this.selectedTodoIndex].subTodos.push(todo.task);
-      this.setTodos();
-      subTodoForm.reset();
+      console.log(this.todos);
+      await this.setTodos();
     }
   }
 
@@ -93,12 +95,11 @@ export class AppComponent implements OnInit {
     }
   }
 
-  deleteTodo(task) {
+  async deleteTodo(task) {
     const index = this.todos.indexOf(task);
     this.todos.splice(index, 1);
     this.selectedTodoIndex = null;
-    this.setTodos();
-
+    await this.setTodos();
   }
 
   viewTodos(index) {
@@ -106,8 +107,9 @@ export class AppComponent implements OnInit {
     this.subTodoList = this.todos[this.selectedTodoIndex].subTodos;
   }
 
-  deleteSubTodo(index) {
+  async deleteSubTodo(index) {
     this.todos[this.selectedTodoIndex].subTodos.splice(index, 1);
-    this.setTodos();
+    await this.setTodos();
+    await this.loadTodo();
   }
 }
